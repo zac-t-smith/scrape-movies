@@ -1,0 +1,36 @@
+import os
+cwd = os.getcwd()
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
+# estblishing the driver I will be using 
+driver = webdriver.Chrome('C:/chromedriver_win32/chromedriver.exe')
+
+# starting our search where most things do -- Google
+driver.get('https://www.google.com')
+
+# identifying where the search bar is with the XPATH
+box = driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input')
+# automatically sending the string we want to search for into the search bar
+box.send_keys('Top 100 movies of all time')
+# after writing our search criteria into the search bar, we are executing the search 
+box.send_keys(Keys.ENTER)
+
+# link on google we want to look at 
+iMBD_link = driver.find_element(By.XPATH, '//*[@id="rso"]/div[1]/div/div/div[1]/div/a/h3').click()
+# putting a wait time on the website to allow all 100 movies to load
+time.sleep(5)
+
+# identify the height of the page
+driver.execute_script('return document.body.scrollHeight')
+# scrolling down to the number 50 movie of all time
+driver.execute_script('window.scrollTo(0,22500)')
+
+# clicking on the number 50 movie of all time
+jaws_link = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[4]/div[3]/div[50]/div[2]/h3/a').click()
+# taking a screenshot of the banner
+driver.find_element(By.XPATH, '//*[@id="__next"]/main/div/section[1]/section/div[3]/section/section/div[2]').screenshot('C:/Users/ZacTS/OneDrive/Pictures/Screenshots/jaws.png')
